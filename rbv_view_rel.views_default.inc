@@ -65,7 +65,7 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['relationships']['field_rel_target_target_id']['label'] = 'target';
   /* Field: Content: Soggetto 1 */
   $handler->display->display_options['fields']['field_rel_source']['id'] = 'field_rel_source';
-  $handler->display->display_options['fields']['field_rel_source']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['field_rel_source']['table'] = 'field_data_field_rel_source';
   $handler->display->display_options['fields']['field_rel_source']['field'] = 'field_rel_source';
   $handler->display->display_options['fields']['field_rel_source']['label'] = '';
   $handler->display->display_options['fields']['field_rel_source']['element_label_colon'] = FALSE;
@@ -78,6 +78,7 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['fields']['field_rel_categories']['field'] = 'field_rel_categories';
   $handler->display->display_options['fields']['field_rel_categories']['label'] = '';
   $handler->display->display_options['fields']['field_rel_categories']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_rel_categories']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_rel_categories']['delta_offset'] = '0';
   /* Field: Content: Soggetto 2 */
   $handler->display->display_options['fields']['field_rel_target']['id'] = 'field_rel_target';
@@ -100,14 +101,10 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Soggetto 1 (field_rel_source) */
+  /* Sort criterion: Broken/missing handler */
   $handler->display->display_options['sorts']['field_rel_source_target_id']['id'] = 'field_rel_source_target_id';
   $handler->display->display_options['sorts']['field_rel_source_target_id']['table'] = 'og_membership';
   $handler->display->display_options['sorts']['field_rel_source_target_id']['field'] = 'field_rel_source_target_id';
-  /* Sort criterion: Content: Soggetto 2 (field_rel_target) */
-  $handler->display->display_options['sorts']['field_rel_target_target_id']['id'] = 'field_rel_target_target_id';
-  $handler->display->display_options['sorts']['field_rel_target_target_id']['table'] = 'field_data_field_rel_target';
-  $handler->display->display_options['sorts']['field_rel_target_target_id']['field'] = 'field_rel_target_target_id';
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -139,8 +136,8 @@ function rbv_view_rel_views_default_views() {
     'relation' => 'relation',
   );
 
-  /* Display: Page: this group as source */
-  $handler = $view->new_display('page', 'Page: this group as source', 'page');
+  /* Display: Page: group source */
+  $handler = $view->new_display('page', 'Page: group source', 'page');
   $handler->display->display_options['display_description'] = 'All the relations of this group as source';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: source */
@@ -150,7 +147,7 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['relationships']['og_membership_related_node_group']['ui_name'] = 'source';
   $handler->display->display_options['relationships']['og_membership_related_node_group']['label'] = 'source';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Soggetto 1 (field_rel_source) */
+  /* Sort criterion: Broken/missing handler */
   $handler->display->display_options['sorts']['field_rel_source_target_id']['id'] = 'field_rel_source_target_id';
   $handler->display->display_options['sorts']['field_rel_source_target_id']['table'] = 'og_membership';
   $handler->display->display_options['sorts']['field_rel_source_target_id']['field'] = 'field_rel_source_target_id';
@@ -184,12 +181,12 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Attachment: this group as target */
-  $handler = $view->new_display('attachment', 'Attachment: this group as target', 'attachment_1');
+  /* Display: Attachment: group target */
+  $handler = $view->new_display('attachment', 'Attachment: group target', 'attachment_1');
   $handler->display->display_options['display_description'] = 'All the relations of this group as target';
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Soggetto 1 (field_rel_source) */
+  /* Sort criterion: Broken/missing handler */
   $handler->display->display_options['sorts']['field_rel_source_target_id']['id'] = 'field_rel_source_target_id';
   $handler->display->display_options['sorts']['field_rel_source_target_id']['table'] = 'og_membership';
   $handler->display->display_options['sorts']['field_rel_source_target_id']['field'] = 'field_rel_source_target_id';
@@ -199,7 +196,9 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['sorts']['field_rel_target_target_id']['field'] = 'field_rel_target_target_id';
   $handler->display->display_options['displays'] = array(
     'page' => 'page',
+    'block_1' => 'block_1',
     'default' => 0,
+    'page_1' => 0,
   );
   $handler->display->display_options['attachment_position'] = 'after';
   $handler->display->display_options['inherit_arguments'] = FALSE;
@@ -216,6 +215,70 @@ function rbv_view_rel_views_default_views() {
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Block: group source */
+  $handler = $view->new_display('block', 'Block: group source', 'block_1');
+  $handler->display->display_options['display_description'] = 'Block: group source';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: source (og) */
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['id'] = 'og_membership_related_node_group';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['field'] = 'og_membership_related_node_group';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['ui_name'] = 'source (og)';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['label'] = 'source (og)';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['field_rel_source']['id'] = 'field_rel_source';
+  $handler->display->display_options['fields']['field_rel_source']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['field_rel_source']['field'] = 'field_rel_source';
+  $handler->display->display_options['fields']['field_rel_source']['label'] = '';
+  $handler->display->display_options['fields']['field_rel_source']['element_label_colon'] = FALSE;
+  /* Field: Content: Relazione */
+  $handler->display->display_options['fields']['field_rel_categories']['id'] = 'field_rel_categories';
+  $handler->display->display_options['fields']['field_rel_categories']['table'] = 'field_data_field_rel_categories';
+  $handler->display->display_options['fields']['field_rel_categories']['field'] = 'field_rel_categories';
+  $handler->display->display_options['fields']['field_rel_categories']['label'] = '';
+  $handler->display->display_options['fields']['field_rel_categories']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_rel_categories']['delta_offset'] = '0';
+  /* Field: Content: Soggetto 2 */
+  $handler->display->display_options['fields']['field_rel_target']['id'] = 'field_rel_target';
+  $handler->display->display_options['fields']['field_rel_target']['table'] = 'field_data_field_rel_target';
+  $handler->display->display_options['fields']['field_rel_target']['field'] = 'field_rel_target';
+  $handler->display->display_options['fields']['field_rel_target']['label'] = '';
+  $handler->display->display_options['fields']['field_rel_target']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_rel_target']['settings'] = array(
+    'link' => 1,
+  );
+  /* Field: Content: Link */
+  $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'og_membership_related_node_group';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['title'] = 'Relazioni di %1';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
+    'org' => 'org',
+    'project' => 'project',
+  );
+  $handler->display->display_options['block_description'] = 'Relations per group';
   $export['grouprelations'] = $view;
 
   return $export;
